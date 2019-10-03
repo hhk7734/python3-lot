@@ -22,28 +22,37 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
 
-from setuptools import setup, find_packages
+from setuptools import setup, Extension
+from setuptools.command.sdist import sdist
+from setuptools.command.build_py import build_py
 
-classifiers = [
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: POSIX :: Linux",
-    "Intended Audience :: Developers",
-    "Topic :: Software Development",
-    "Topic :: System :: Hardware",
+ext_modules = [
+    Extension(
+        "lot._lot",
+        sources=["wrap/lot.i"],
+        libraries=["lot"],
+        swig_opts=["-c++","-I/usr/local/include"]
+    ),
 ]
 
+'''
+for upload
+'''
+class sdist_after_ext(sdist):
+    def run(self):
+        self.run_command("build_ext")
+        return sdist.run(self)
+
+'''
+in the distribution when running setup.py bdist or bdist_wheel.
+'''
+class build_py_after_ext(build_py):
+    def run(self):
+        self.run_command("build_ext")
+        return build_py.run(self)
+
 setup(
-    name                            = "lot",
-    version                         = "0.0.1",
-    description                     = "A module to control SBC GPIO",
-    url                             = "https://github.com/loliot",
-    classifiers                     = classifiers,
-    keywords                        = ["lot", "GPIO"],
-    package_dir                     = {"": "src"},
-    packages                        = find_packages('src'),
-    license                         = "MIT",
-    project_urls                    = {
-                                        'Source': 'https://github.com/loliot/lot-python',
-                                    },
+    ext_modules = ext_modules,
+    cmdclass = {"sdist": sdist_after_ext,
+                "build_py": build_py_after_ext},
 )

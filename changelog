@@ -1,0 +1,13 @@
+# CHANGELOG
+
+lot-python (0.0.2) unstable
+
+    * init(), set_pin_mode(), digital_write() test.
+
+ -- Hyeonki Hong <hhk7734@gmail.com>  Thu, 03 Oct 2019 17:36:28 +0900
+
+lot-python (0.0.1) unstable
+
+    * Initial release.
+
+ -- Hyeonki Hong <hhk7734@gmail.com>  Thu, 22 Aug 2019 22:03:00 +0900
