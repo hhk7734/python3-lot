@@ -37,6 +37,13 @@ ext_modules = [
     ),
 ]
 
+with open("changelog", "r") as f:
+    f.readline()
+    f.readline()
+    version = f.readline()
+    version = version.split()
+    version = version[1][1:-1]
+
 '''
 for upload
 '''
@@ -54,6 +61,7 @@ class build_py_after_ext(build_py):
         return build_py.run(self)
 
 setup(
+    version = version,
     ext_modules = ext_modules,
     cmdclass = {"sdist": sdist_after_ext,
                 "build_py": build_py_after_ext},
