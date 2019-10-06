@@ -31,7 +31,9 @@ ext_modules = [
         "lot._lot",
         sources=["wrap/lot.i"],
         libraries=["lot"],
-        swig_opts=["-c++","-I/usr/local/include"]
+        swig_opts=["-c++",
+            "-I/usr/local/include",
+            "-I/usr/include"]
     ),
 ]
 
