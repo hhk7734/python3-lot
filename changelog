@@ -1,5 +1,12 @@
 # CHANGELOG
 
+lot-python (0.0.4) unstable
+
+    * Fix TypeError.
+    * Move version check from setup.cfg to setup.py.
+
+ -- Hyeonki Hong <hhk7734@gmail.com>  Sun, 06 Oct 2019 16:56:29 +0900
+
 lot-python (0.0.3) unstable
 
     * Fix include path error.
