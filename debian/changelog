@@ -1,25 +1,23 @@
-# CHANGELOG
-
-lot-python (0.0.4) unstable
+lot-python (0.0.4) unstable; urgency=medium
 
     * Fix TypeError.
     * Move version check from setup.cfg to setup.py.
 
  -- Hyeonki Hong <hhk7734@gmail.com>  Sun, 06 Oct 2019 16:56:29 +0900
 
-lot-python (0.0.3) unstable
+lot-python (0.0.3) unstable; urgency=medium
 
     * Fix include path error.
 
  -- Hyeonki Hong <hhk7734@gmail.com>  Sun, 06 Oct 2019 10:27:52 +0900
 
-lot-python (0.0.2) unstable
+lot-python (0.0.2) unstable; urgency=medium
 
     * init(), set_pin_mode(), digital_write() test.
 
  -- Hyeonki Hong <hhk7734@gmail.com>  Thu, 03 Oct 2019 17:36:28 +0900
 
-lot-python (0.0.1) unstable
+lot-python (0.0.1) unstable; urgency=medium
 
     * Initial release.
 
