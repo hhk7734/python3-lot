@@ -1,23 +1,31 @@
-lot-python (0.0.4) unstable; urgency=medium
+lot-python (0.2.0) unstable; urgency=medium
+
+  * Add typemap to convert c++ typedef
+  * Add lot_time.h
+
+ -- Hyeonki Hong <hhk7734@gmail.com>  Sun, 17 Nov 2019 19:12:19 +0900
+
+lot-python (0.1.3) unstable; urgency=medium
 
     * Fix TypeError.
     * Move version check from setup.cfg to setup.py.
 
  -- Hyeonki Hong <hhk7734@gmail.com>  Sun, 06 Oct 2019 16:56:29 +0900
 
-lot-python (0.0.3) unstable; urgency=medium
+lot-python (0.1.2) unstable; urgency=medium
 
     * Fix include path error.
 
  -- Hyeonki Hong <hhk7734@gmail.com>  Sun, 06 Oct 2019 10:27:52 +0900
 
-lot-python (0.0.2) unstable; urgency=medium
+lot-python (0.1.1) unstable; urgency=medium
 
-    * init(), set_pin_mode(), digital_write() test.
+    * Test basic function
+    * Move setup description from setup.py to setup.cfg
 
  -- Hyeonki Hong <hhk7734@gmail.com>  Thu, 03 Oct 2019 17:36:28 +0900
 
-lot-python (0.0.1) unstable; urgency=medium
+lot-python (0.1.0) unstable; urgency=medium
 
     * Initial release.
 
