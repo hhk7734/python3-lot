@@ -25,6 +25,10 @@ SOFTWARE.
 from setuptools import setup, Extension
 from setuptools.command.sdist import sdist
 from setuptools.command.build_py import build_py
+from os import path
+
+BASE_DIR = path.dirname(path.abspath(__file__))
+CHANGELOG_PATH = path.join(BASE_DIR, "debian/changelog")
 
 ext_modules = [
     Extension(
@@ -37,7 +41,7 @@ ext_modules = [
     ),
 ]
 
-with open("debian/changelog", "r") as f:
+with open(CHANGELOG_PATH, "r") as f:
     version = f.readline()
     version = version.split()
     version = version[1][1:-1]
