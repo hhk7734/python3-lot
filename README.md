@@ -25,7 +25,6 @@ python3 -m pip install lot
 
 ```python
 import lot
-import time
 
 LED_PIN = 7
 
@@ -34,7 +33,7 @@ lot.set_pin_mode(LED_PIN, lot.OUTPUT)
 
 while True:
     lot.digital_write(LED_PIN, lot.HIGH)
-    time.sleep(1)
+    lot.delay_ms(100)
     lot.digital_write(LED_PIN, lot.LOW)
-    time.sleep(1)
+    lot.delay_ms(100)
 ```

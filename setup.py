@@ -37,9 +37,7 @@ ext_modules = [
     ),
 ]
 
-with open("changelog", "r") as f:
-    f.readline()
-    f.readline()
+with open("debian/changelog", "r") as f:
     version = f.readline()
     version = version.split()
     version = version[1][1:-1]
