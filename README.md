@@ -37,3 +37,7 @@ while True:
     lot.digital_write(LED_PIN, lot.LOW)
     lot.delay_ms(100)
 ```
+
+## Changelog
+
+Ref: debian/changelog
