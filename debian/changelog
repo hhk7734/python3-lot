@@ -1,3 +1,9 @@
+python3-lot (0.3.0) unstable; urgency=medium
+
+  * Implement communication wrapper class
+
+ -- Hyeonki Hong <hhk7734@gmail.com>  Mon, 23 Dec 2019 14:05:06 +0900
+
 python3-lot (0.2.2) unstable; urgency=medium
 
   * Fix file path error
