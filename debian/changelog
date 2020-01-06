@@ -1,3 +1,9 @@
+python3-lot (0.4.1) unstable; urgency=medium
+
+  * Fix crash that occurs when running 'pip install'
+
+ -- Hyeonki Hong <hhk7734@gmail.com>  Mon, 06 Jan 2020 19:48:55 +0900
+
 python3-lot (0.4.0) unstable; urgency=medium
 
   * Use Pybind11 instead of Swig
