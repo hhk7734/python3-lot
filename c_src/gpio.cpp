@@ -55,8 +55,8 @@ PYBIND11_MODULE( _lot, m )
     m.attr( "PULL_DOWN" ) = lot::PULL_DOWN;
     m.attr( "PULL_UP" )   = lot::PULL_UP;
 
-    m.attr( "LOW" )  = lot::LOW;
-    m.attr( "HIGH" ) = lot::HIGH;
+    m.attr( "LOW" )  = static_cast<int>( lot::LOW );
+    m.attr( "HIGH" ) = static_cast<int>( lot::HIGH );
 
     m.attr( "LSB_FIRST" ) = lot::LSB_FIRST;
     m.attr( "MSB_FIRST" ) = lot::MSB_FIRST;
