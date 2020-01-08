@@ -1,3 +1,11 @@
+python3-lot (0.5.0) unstable; urgency=medium
+
+  * Rename gpio.cpp to lot.cpp
+  * Add type_casters
+  * Implement Uart class
+
+ -- Hyeonki Hong <hhk7734@gmail.com>  Wed, 08 Jan 2020 13:49:14 +0900
+
 python3-lot (0.4.1) unstable; urgency=medium
 
   * Fix crash that occurs when running 'pip install'
