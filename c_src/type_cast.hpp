@@ -126,5 +126,76 @@ namespace detail
         }
     };
 
+    template<>
+    struct type_caster<lot::uart_mode_t>
+    {
+    public:
+        PYBIND11_TYPE_CASTER( lot::uart_mode_t, _( "lot::uart_mode_t" ) );
+        bool load( handle src, bool )
+        {
+            PyObject *source = src.ptr();
+            PyObject *tmp    = PyNumber_Long( source );
+            if( !tmp )
+                return false;
+            value = static_cast<lot::uart_mode_t>( PyLong_AsLong( tmp ) );
+            Py_DECREF( tmp );
+            return !( value == -1 && !PyErr_Occurred() );
+        }
+
+        static handle cast( lot::uart_mode_t src,
+                            return_value_policy /* policy */,
+                            handle /* parent */ )
+        {
+            return PyLong_FromLong( static_cast<int>( src ) );
+        }
+    };
+
+    template<>
+    struct type_caster<lot::spi_mode_t>
+    {
+    public:
+        PYBIND11_TYPE_CASTER( lot::spi_mode_t, _( "lot::spi_mode_t" ) );
+        bool load( handle src, bool )
+        {
+            PyObject *source = src.ptr();
+            PyObject *tmp    = PyNumber_Long( source );
+            if( !tmp )
+                return false;
+            value = static_cast<lot::spi_mode_t>( PyLong_AsLong( tmp ) );
+            Py_DECREF( tmp );
+            return !( value == -1 && !PyErr_Occurred() );
+        }
+
+        static handle cast( lot::spi_mode_t src,
+                            return_value_policy /* policy */,
+                            handle /* parent */ )
+        {
+            return PyLong_FromLong( static_cast<int>( src ) );
+        }
+    };
+
+    template<>
+    struct type_caster<lot::log_level_t>
+    {
+    public:
+        PYBIND11_TYPE_CASTER( lot::log_level_t, _( "lot::log_level_t" ) );
+        bool load( handle src, bool )
+        {
+            PyObject *source = src.ptr();
+            PyObject *tmp    = PyNumber_Long( source );
+            if( !tmp )
+                return false;
+            value = static_cast<lot::log_level_t>( PyLong_AsLong( tmp ) );
+            Py_DECREF( tmp );
+            return !( value == -1 && !PyErr_Occurred() );
+        }
+
+        static handle cast( lot::log_level_t src,
+                            return_value_policy /* policy */,
+                            handle /* parent */ )
+        {
+            return PyLong_FromLong( static_cast<int>( src ) );
+        }
+    };
 }    // namespace detail
 }    // namespace pybind11
