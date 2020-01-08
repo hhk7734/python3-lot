@@ -62,6 +62,57 @@ PYBIND11_MODULE( _lot, m )
     m.attr( "LSB_FIRST" ) = lot::LSB_FIRST;
     m.attr( "MSB_FIRST" ) = lot::MSB_FIRST;
 
+    m.attr( "U5N1" ) = lot::U5N1;
+    m.attr( "U6N1" ) = lot::U6N1;
+    m.attr( "U7N1" ) = lot::U7N1;
+    m.attr( "U8N1" ) = lot::U8N1;
+    m.attr( "U5N2" ) = lot::U5N2;
+    m.attr( "U6N2" ) = lot::U6N2;
+    m.attr( "U7N2" ) = lot::U7N2;
+    m.attr( "U8N2" ) = lot::U8N2;
+    m.attr( "U5E1" ) = lot::U5E1;
+    m.attr( "U6E1" ) = lot::U6E1;
+    m.attr( "U7E1" ) = lot::U7E1;
+    m.attr( "U8E1" ) = lot::U8E1;
+    m.attr( "U5E2" ) = lot::U5E2;
+    m.attr( "U6E2" ) = lot::U6E2;
+    m.attr( "U7E2" ) = lot::U7E2;
+    m.attr( "U8E2" ) = lot::U8E2;
+    m.attr( "U5O1" ) = lot::U5O1;
+    m.attr( "U6O1" ) = lot::U6O1;
+    m.attr( "U7O1" ) = lot::U7O1;
+    m.attr( "U8O1" ) = lot::U8O1;
+    m.attr( "U5O2" ) = lot::U5O2;
+    m.attr( "U6O2" ) = lot::U6O2;
+    m.attr( "U7O2" ) = lot::U7O2;
+    m.attr( "U8O2" ) = lot::U8O2;
+    m.attr( "U5M1" ) = lot::U5M1;
+    m.attr( "U6M1" ) = lot::U6M1;
+    m.attr( "U7M1" ) = lot::U7M1;
+    m.attr( "U8M1" ) = lot::U8M1;
+    m.attr( "U5M2" ) = lot::U5M2;
+    m.attr( "U6M2" ) = lot::U6M2;
+    m.attr( "U7M2" ) = lot::U7M2;
+    m.attr( "U8M2" ) = lot::U8M2;
+    m.attr( "U5S1" ) = lot::U5S1;
+    m.attr( "U6S1" ) = lot::U6S1;
+    m.attr( "U7S1" ) = lot::U7S1;
+    m.attr( "U8S1" ) = lot::U8S1;
+    m.attr( "U5S2" ) = lot::U5S2;
+    m.attr( "U6S2" ) = lot::U6S2;
+    m.attr( "U7S2" ) = lot::U7S2;
+    m.attr( "U8S2" ) = lot::U8S2;
+
+    m.attr( "MODE0" ) = lot::MODE0;
+    m.attr( "MODE1" ) = lot::MODE1;
+    m.attr( "MODE2" ) = lot::MODE2;
+    m.attr( "MODE3" ) = lot::MODE3;
+
+    m.attr( "DEBUG" )   = lot::DEBUG;
+    m.attr( "INFO" )    = lot::INFO;
+    m.attr( "WARNING" ) = lot::WARNING;
+    m.attr( "ERROR" )   = lot::ERROR;
+
     /*
      * lot/lot-API/lot_time.h
      */
