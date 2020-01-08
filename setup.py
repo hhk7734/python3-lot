@@ -49,7 +49,7 @@ class get_pybind_include(object):
 ext_modules = [
     Extension(
         "lot._lot",
-        sources=["c_src/gpio.cpp"],
+        sources=["c_src/lot.cpp"],
         include_dirs=[
             # Path to pybind11 headers
             get_pybind_include(),
