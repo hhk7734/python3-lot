@@ -25,6 +25,7 @@
 #include <pybind11/pybind11.h>
 #include <lot/lot.h>
 #include <lot/Gpio.h>
+#include <lot/Uart.h>
 
 #include "type_cast.hpp"
 
@@ -95,4 +96,41 @@ PYBIND11_MODULE( _lot, m )
         .def( "toggle", ( int ( lot::Gpio::* )( void ) ) & lot::Gpio::toggle )
         .def( "analog", ( void ( lot::Gpio::* )( int ) ) & lot::Gpio::analog )
         .def( "analog", ( int ( lot::Gpio::* )( void ) ) & lot::Gpio::analog );
+
+
+    /*
+     * lot/Uart.h
+     */
+    py::class_<lot::Uart>( m, "Uart" )
+        .def( py::init<const char *>() )
+        .def( py::init<uint16_t>() )
+        .def( "init",
+              &lot::Uart::init,
+              py::arg( "baud_rate" ) = 115200,
+              py::arg( "uart_mode" ) = lot::U8N1 )
+        .def( "baudrate", &lot::Uart::baudrate )
+        .def( "mode", &lot::Uart::mode )
+        .def( "available", &lot::Uart::available )
+        .def( "transmit",
+              []( lot::Uart &self, py::bytes data ) {
+                  std::string str = data;
+                  if( str.size() > 0 )
+                  {
+                      self.transmit( reinterpret_cast<uint8_t *>(
+                                         const_cast<char *>( str.c_str() ) ),
+                                     str.size() );
+                  }
+              } )
+        .def( "receive", []( lot::Uart &self ) {
+            uint16_t size = self.available();
+            if( size > 0 )
+            {
+                uint8_t *buf = new uint8_t[size];
+                self.receive( buf, size );
+                py::bytes data( reinterpret_cast<const char *>( buf ), size );
+                delete buf;
+                return data;
+            }
+            return py::bytes( "" );
+        } );
 }
