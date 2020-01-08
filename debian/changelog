@@ -1,3 +1,9 @@
+python3-lot (0.5.1) unstable; urgency=medium
+
+  * Add const variables
+
+ -- Hyeonki Hong <hhk7734@gmail.com>  Wed, 08 Jan 2020 17:49:10 +0900
+
 python3-lot (0.5.0) unstable; urgency=medium
 
   * Rename gpio.cpp to lot.cpp
