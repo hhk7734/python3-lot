@@ -27,6 +27,7 @@
 #include <lot/Gpio.h>
 #include <lot/Uart.h>
 #include <lot/I2c.h>
+#include <lot/Spi.h>
 
 #include "type_cast.hpp"
 
@@ -258,6 +259,121 @@ PYBIND11_MODULE( _lot, m )
                 return py::bytes( "" );
             },
             py::arg( "slave_address" ),
+            py::arg( "register_address" ),
+            py::arg( "size" ) = 1 );
+
+    /*
+     * lot/Spi.h
+     */
+    py::class_<lot::Spi>( m, "Spi" )
+        .def( py::init<uint16_t, uint16_t>() )
+        .def( py::init<const char *>() )
+        .def( "init",
+              &lot::Spi::init,
+              py::arg( "spi_clock" )     = 1000000,
+              py::arg( "spi_mode" )      = lot::MODE0,
+              py::arg( "spi_bit_order" ) = lot::MSB_FIRST )
+        .def( "clock", &lot::Spi::clock )
+        .def( "mode", &lot::Spi::mode )
+        .def( "bit_order", &lot::Spi::bit_order )
+        .def( "transceive",
+              []( lot::Spi &self, py::bytes tx_data ) {
+                  std::string str  = tx_data;
+                  int         size = str.size();
+                  if( size > 0 )
+                  {
+                      uint8_t *buf = new uint8_t[size];
+                      self.transceive( reinterpret_cast<uint8_t *>(
+                                           const_cast<char *>( str.c_str() ) ),
+                                       buf,
+                                       size );
+                      py::bytes rx_data( reinterpret_cast<const char *>( buf ),
+                                         size );
+                      delete buf;
+                      return rx_data;
+                  }
+                  return py::bytes( "" );
+              } )
+        .def( "transceive",
+              []( lot::Spi &self, int cs_pin, py::bytes tx_data ) {
+                  std::string str  = tx_data;
+                  int         size = str.size();
+                  if( size > 0 )
+                  {
+                      uint8_t *buf = new uint8_t[size];
+                      self.transceive( cs_pin,
+                                       reinterpret_cast<uint8_t *>(
+                                           const_cast<char *>( str.c_str() ) ),
+                                       buf,
+                                       size );
+                      py::bytes rx_data( reinterpret_cast<const char *>( buf ),
+                                         size );
+                      delete buf;
+                      return rx_data;
+                  }
+                  return py::bytes( "" );
+              } )
+        .def( "write_reg",
+              []( lot::Spi &self, int register_address, py::bytes data ) {
+                  std::string str = data;
+                  if( str.size() > 0 )
+                  {
+                      self.write_reg( static_cast<uint8_t>( register_address ),
+                                      reinterpret_cast<uint8_t *>(
+                                          const_cast<char *>( str.c_str() ) ),
+                                      str.size() );
+                  }
+              } )
+        .def( "write_reg",
+              []( lot::Spi &self,
+                  int       cs_pin,
+                  int       register_address,
+                  py::bytes data ) {
+                  std::string str = data;
+                  if( str.size() > 0 )
+                  {
+                      self.write_reg( cs_pin,
+                                      static_cast<uint8_t>( register_address ),
+                                      reinterpret_cast<uint8_t *>(
+                                          const_cast<char *>( str.c_str() ) ),
+                                      str.size() );
+                  }
+              } )
+        .def(
+            "read_reg",
+            []( lot::Spi &self, int register_address, int size ) {
+                if( size > 0 )
+                {
+                    uint8_t *buf = new uint8_t[size];
+                    self.read_reg(
+                        static_cast<uint8_t>( register_address ), buf, size );
+                    py::bytes data( reinterpret_cast<const char *>( buf ),
+                                    size );
+                    delete buf;
+                    return data;
+                }
+                return py::bytes( "" );
+            },
+            py::arg( "register_address" ),
+            py::arg( "size" ) = 1 )
+        .def(
+            "read_reg",
+            []( lot::Spi &self, int cs_pin, int register_address, int size ) {
+                if( size > 0 )
+                {
+                    uint8_t *buf = new uint8_t[size];
+                    self.read_reg( cs_pin,
+                                   static_cast<uint8_t>( register_address ),
+                                   buf,
+                                   size );
+                    py::bytes data( reinterpret_cast<const char *>( buf ),
+                                    size );
+                    delete buf;
+                    return data;
+                }
+                return py::bytes( "" );
+            },
+            py::arg( "cs_pin" ),
             py::arg( "register_address" ),
             py::arg( "size" ) = 1 );
 }
