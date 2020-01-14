@@ -26,6 +26,7 @@
 #include <lot/lot.h>
 #include <lot/Gpio.h>
 #include <lot/Uart.h>
+#include <lot/I2c.h>
 
 #include "type_cast.hpp"
 
@@ -184,4 +185,79 @@ PYBIND11_MODULE( _lot, m )
             }
             return py::bytes( "" );
         } );
+
+    /*
+     * lot/I2c.h
+     */
+    py::class_<lot::I2c>( m, "I2c" )
+        .def( py::init<uint16_t>() )
+        .def( py::init<const char *>() )
+        .def( "init", &lot::I2c::init, py::arg( "i2c_clock" ) = 400000 )
+        .def( "clock", &lot::I2c::clock )
+        .def( "transmit",
+              []( lot::I2c &self, int slave_address, py::bytes data ) {
+                  std::string str = data;
+                  if( str.size() > 0 )
+                  {
+                      self.transmit( static_cast<uint8_t>( slave_address ),
+                                     reinterpret_cast<uint8_t *>(
+                                         const_cast<char *>( str.c_str() ) ),
+                                     str.size() );
+                  }
+              } )
+        .def(
+            "receive",
+            []( lot::I2c &self, int slave_address, int size ) {
+                if( size > 0 )
+                {
+                    uint8_t *buf = new uint8_t[size];
+                    self.receive(
+                        static_cast<uint8_t>( slave_address ), buf, size );
+                    py::bytes data( reinterpret_cast<const char *>( buf ),
+                                    size );
+                    delete buf;
+                    return data;
+                }
+                return py::bytes( "" );
+            },
+            py::arg( "slave_address" ),
+            py::arg( "size" ) = 1 )
+        .def( "write_reg",
+              []( lot::I2c &self,
+                  int       slave_address,
+                  int       register_address,
+                  py::bytes data ) {
+                  std::string str = data;
+                  if( str.size() > 0 )
+                  {
+                      self.write_reg( static_cast<uint8_t>( slave_address ),
+                                      static_cast<uint8_t>( register_address ),
+                                      reinterpret_cast<uint8_t *>(
+                                          const_cast<char *>( str.c_str() ) ),
+                                      str.size() );
+                  }
+              } )
+        .def(
+            "read_reg",
+            []( lot::I2c &self,
+                int       slave_address,
+                int       register_address,
+                int       size ) {
+                if( size > 0 )
+                {
+                    uint8_t *buf = new uint8_t[size];
+                    self.read_reg( static_cast<uint8_t>( slave_address ),
+                                   static_cast<uint8_t>( register_address ),
+                                   buf,
+                                   size );
+                    py::bytes data( reinterpret_cast<const char *>( buf ),
+                                    size );
+                    delete buf;
+                    return data;
+                }
+                return py::bytes( "" );
+            },
+            py::arg( "slave_address" ),
+            py::arg( "register_address" ),
+            py::arg( "size" ) = 1 );
 }
