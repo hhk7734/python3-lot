@@ -6,7 +6,6 @@ LED_PIN = 13
 if len(sys.argv) > 1:
     LED_PIN = int(sys.argv[1])
 
-lot.init_time()
 led = lot.Gpio(LED_PIN)
 led.mode(lot.DOUT)
 
