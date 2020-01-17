@@ -261,57 +261,121 @@ PYBIND11_MODULE( _lot, m )
      * lot/Uart.h
      */
     py::class_<lot::Uart>( m, "Uart" )
-        .def( py::init<const char *>() )
-        .def( py::init<uint16_t>() )
-        .def( "init",
-              &lot::Uart::init,
-              py::arg( "baud_rate" ) = 115200,
-              py::arg( "uart_mode" ) = lot::U8N1 )
-        .def( "baudrate", &lot::Uart::baudrate )
-        .def( "mode", &lot::Uart::mode )
-        .def( "available", &lot::Uart::available )
-        .def( "transmit",
-              []( lot::Uart &self, py::bytes data ) {
-                  std::string str = data;
-                  if( str.size() > 0 )
-                  {
-                      self.transmit( reinterpret_cast<uint8_t *>(
-                                         const_cast<char *>( str.c_str() ) ),
-                                     str.size() );
-                  }
-              } )
-        .def( "receive", []( lot::Uart &self ) {
-            uint16_t size = self.available();
-            if( size > 0 )
-            {
-                uint8_t *buf = new uint8_t[size];
-                self.receive( buf, size );
-                py::bytes data( reinterpret_cast<const char *>( buf ), size );
-                delete buf;
-                return data;
-            }
-            return py::bytes( "" );
-        } );
+        .def( py::init<uint16_t>(),
+              py::arg( "bus_num" ),
+              "/**\n"
+              " * @brief Creates an instance of Uart class and initializes "
+              "UART.\n"
+              " * @param bus_num\n"
+              " */" )
+        .def( py::init<const char *>(),
+              py::arg( "device" ),
+              "/**\n"
+              " * @brief Creates an instance of Uart class and initializes "
+              "UART.\n"
+              " * @param device Device node name.\n"
+              " */" )
+        .def( "baudrate",
+              &lot::Uart::baudrate,
+              py::arg( "baud_rate" ),
+              "/**\n"
+              " * @brief Sets buadrate.\n"
+              " * @param baud_rate\n"
+              " */" )
+        .def( "mode",
+              &lot::Uart::mode,
+              py::arg( "uart_mode" ),
+              "/**\n"
+              " * @brief Sets UART mode.\n"
+              " * @param uart_mode \n\n"
+              " *      This parameter can be a value of @ref uart_mode_t.\n"
+              " */" )
+        .def( "available",
+              &lot::Uart::available,
+              "/**\n"
+              " * @brief Returns the number of data available to be read.\n"
+              " * @return The number of data.\n"
+              " */" )
+        .def(
+            "transmit",
+            []( lot::Uart &self, py::bytes data ) {
+                std::string str = data;
+                if( str.size() > 0 )
+                {
+                    self.transmit( reinterpret_cast<uint8_t *>(
+                                       const_cast<char *>( str.c_str() ) ),
+                                   str.size() );
+                }
+            },
+            py::arg( "data" ),
+            "/**\n"
+            " * @brief Transmits data to another device.\n"
+            " * @param data Transmission data buffer.\n"
+            " */" )
+        .def(
+            "receive",
+            []( lot::Uart &self ) {
+                uint16_t size = self.available();
+                if( size > 0 )
+                {
+                    uint8_t *buf = new uint8_t[size];
+                    self.receive( buf, size );
+                    py::bytes data( reinterpret_cast<const char *>( buf ),
+                                    size );
+                    delete buf;
+                    return data;
+                }
+                return py::bytes( "" );
+            },
+            "/**\n"
+            " * @brief Receives data from another device.\n"
+            " * @return Reception data buffer.\n"
+            " */" );
 
     /*
      * lot/I2c.h
      */
     py::class_<lot::I2c>( m, "I2c" )
-        .def( py::init<uint16_t>() )
-        .def( py::init<const char *>() )
-        .def( "init", &lot::I2c::init, py::arg( "i2c_clock" ) = 400000 )
-        .def( "clock", &lot::I2c::clock )
-        .def( "transmit",
-              []( lot::I2c &self, int slave_address, py::bytes data ) {
-                  std::string str = data;
-                  if( str.size() > 0 )
-                  {
-                      self.transmit( static_cast<uint8_t>( slave_address ),
-                                     reinterpret_cast<uint8_t *>(
-                                         const_cast<char *>( str.c_str() ) ),
-                                     str.size() );
-                  }
-              } )
+        .def(
+            py::init<uint16_t>(),
+            py::arg( "bus_num" ),
+            "/**\n"
+            " * @brief Creates an instance of I2c class and initializes I2C.\n"
+            " * @param bus_num\n"
+            " */" )
+        .def(
+            py::init<const char *>(),
+            py::arg( "device" ),
+            "/**\n"
+            " * @brief Creates an instance of I2c class and initializes I2C.\n"
+            " * @param device Device node name.\n"
+            " */" )
+        .def( "clock",
+              &lot::I2c::clock,
+              py::arg( "i2c_clock" ),
+              "/**\n"
+              " * @brief Sets clock in hertz.\n"
+              " * @param i2c_clock\n"
+              " */" )
+        .def(
+            "transmit",
+            []( lot::I2c &self, int slave_address, py::bytes data ) {
+                std::string str = data;
+                if( str.size() > 0 )
+                {
+                    self.transmit( static_cast<uint8_t>( slave_address ),
+                                   reinterpret_cast<uint8_t *>(
+                                       const_cast<char *>( str.c_str() ) ),
+                                   str.size() );
+                }
+            },
+            py::arg( "slave_address" ),
+            py::arg( "data" ),
+            "/**\n"
+            " * @brief Transmits data to a slave device.\n"
+            " * @param slave_address\n"
+            " * @param data Transmission data buffer.\n"
+            " */" )
         .def(
             "receive",
             []( lot::I2c &self, int slave_address, int size ) {
@@ -328,22 +392,38 @@ PYBIND11_MODULE( _lot, m )
                 return py::bytes( "" );
             },
             py::arg( "slave_address" ),
-            py::arg( "size" ) = 1 )
-        .def( "write_reg",
-              []( lot::I2c &self,
-                  int       slave_address,
-                  int       register_address,
-                  py::bytes data ) {
-                  std::string str = data;
-                  if( str.size() > 0 )
-                  {
-                      self.write_reg( static_cast<uint8_t>( slave_address ),
-                                      static_cast<uint8_t>( register_address ),
-                                      reinterpret_cast<uint8_t *>(
-                                          const_cast<char *>( str.c_str() ) ),
-                                      str.size() );
-                  }
-              } )
+            py::arg( "size" ),
+            "/**\n"
+            " * @brief Receives data from a slave device.\n"
+            " * @param slave_address\n"
+            " * @param size The number of data.\n"
+            " * @return Reception data buffer.\n"
+            " */" )
+        .def(
+            "write_reg",
+            []( lot::I2c &self,
+                int       slave_address,
+                int       register_address,
+                py::bytes data ) {
+                std::string str = data;
+                if( str.size() > 0 )
+                {
+                    self.write_reg( static_cast<uint8_t>( slave_address ),
+                                    static_cast<uint8_t>( register_address ),
+                                    reinterpret_cast<uint8_t *>(
+                                        const_cast<char *>( str.c_str() ) ),
+                                    str.size() );
+                }
+            },
+            py::arg( "slave_address" ),
+            py::arg( "register_address" ),
+            py::arg( "data" ),
+            "/**\n"
+            " * @brief Writes data to multiple registers of a slave device.\n"
+            " * @param slave_address\n"
+            " * @param register_address\n"
+            " * @param data Transmission data buffer.\n"
+            " */" )
         .def(
             "read_reg",
             []( lot::I2c &self,
@@ -366,85 +446,158 @@ PYBIND11_MODULE( _lot, m )
             },
             py::arg( "slave_address" ),
             py::arg( "register_address" ),
-            py::arg( "size" ) = 1 );
+            py::arg( "size" ),
+            "/**\n"
+            " * @brief Reads data from multiple registers of a slave device.\n"
+            " * @param slave_address\n"
+            " * @param register_address\n"
+            " * @param size The number of data.\n"
+            " * @return Reception data buffer.\n"
+            " */" );
 
     /*
      * lot/Spi.h
      */
     py::class_<lot::Spi>( m, "Spi" )
-        .def( py::init<uint16_t, uint16_t>() )
-        .def( py::init<const char *>() )
-        .def( "init",
-              &lot::Spi::init,
-              py::arg( "spi_clock" )     = 1000000,
-              py::arg( "spi_mode" )      = lot::MODE0,
-              py::arg( "spi_bit_order" ) = lot::MSB_FIRST )
-        .def( "clock", &lot::Spi::clock )
-        .def( "mode", &lot::Spi::mode )
-        .def( "bit_order", &lot::Spi::bit_order )
-        .def( "transceive",
-              []( lot::Spi &self, py::bytes tx_data ) {
-                  std::string str  = tx_data;
-                  int         size = str.size();
-                  if( size > 0 )
-                  {
-                      uint8_t *buf = new uint8_t[size];
-                      self.transceive( reinterpret_cast<uint8_t *>(
-                                           const_cast<char *>( str.c_str() ) ),
-                                       buf,
+        .def(
+            py::init<uint16_t, uint16_t>(),
+            py::arg( "bus_num" ),
+            py::arg( "chip_select" ),
+            "/**\n"
+            " * @brief Creates an instance of Spi class and initializes SPI.\n"
+            " *      /dev/spidevB.C B == bus_num, C == chip_select.\n"
+            " * @param bus_num\n"
+            " * @param chip_select\n"
+            " */" )
+        .def(
+            py::init<const char *>(),
+            py::arg( "device" ),
+            "/**\n"
+            " * @brief Creates an instance of Spi class and initializes SPI.\n"
+            " *      /dev/spidevB.C B == bus_num, C == chip_select.\n"
+            " * @param device Device node name.\n"
+            " */" )
+        .def( "clock",
+              &lot::Spi::clock,
+              py::arg( "spi_clock" ),
+              "/**\n"
+              " * @brief Sets clock in hertz.\n"
+              " * @param spi_clock\n"
+              " */" )
+        .def( "mode",
+              &lot::Spi::mode,
+              py::arg( "spi_mode" ),
+              "/**\n"
+              " * @brief Sets SPI mode.\n"
+              " * @param spi_mode\n"
+              " *      This parameter can be a value of @ref spi_mode_t.\n"
+              " */" )
+        .def( "bit_order",
+              &lot::Spi::bit_order,
+              py::arg( "spi_bit_order" ),
+              "/**\n"
+              " * @brief Sets bit-order.\n"
+              " * @param spi_bit_order\n"
+              " *      This parameter can be a value of @ref bit_order_t.\n"
+              " */" )
+        .def(
+            "transceive",
+            []( lot::Spi &self, py::bytes tx_data ) {
+                std::string str  = tx_data;
+                int         size = str.size();
+                if( size > 0 )
+                {
+                    uint8_t *buf = new uint8_t[size];
+                    self.transceive( reinterpret_cast<uint8_t *>(
+                                         const_cast<char *>( str.c_str() ) ),
+                                     buf,
+                                     size );
+                    py::bytes rx_data( reinterpret_cast<const char *>( buf ),
                                        size );
-                      py::bytes rx_data( reinterpret_cast<const char *>( buf ),
-                                         size );
-                      delete buf;
-                      return rx_data;
-                  }
-                  return py::bytes( "" );
-              } )
-        .def( "transceive",
-              []( lot::Spi &self, int cs_pin, py::bytes tx_data ) {
-                  std::string str  = tx_data;
-                  int         size = str.size();
-                  if( size > 0 )
-                  {
-                      uint8_t *buf = new uint8_t[size];
-                      self.transceive( cs_pin,
-                                       reinterpret_cast<uint8_t *>(
-                                           const_cast<char *>( str.c_str() ) ),
-                                       buf,
+                    delete buf;
+                    return rx_data;
+                }
+                return py::bytes( "" );
+            },
+            py::arg( "tx_data" ),
+            "/**\n"
+            " * @brief Transmits and Receives data at the same time.\n"
+            " * @param tx_data Transmission data buffer.\n"
+            " * @return Reception data buffer.\n"
+            " */" )
+        .def(
+            "transceive",
+            []( lot::Spi &self, py::bytes tx_data, int cs_pin ) {
+                std::string str  = tx_data;
+                int         size = str.size();
+                if( size > 0 )
+                {
+                    uint8_t *buf = new uint8_t[size];
+                    self.transceive( reinterpret_cast<uint8_t *>(
+                                         const_cast<char *>( str.c_str() ) ),
+                                     buf,
+                                     size,
+                                     cs_pin );
+                    py::bytes rx_data( reinterpret_cast<const char *>( buf ),
                                        size );
-                      py::bytes rx_data( reinterpret_cast<const char *>( buf ),
-                                         size );
-                      delete buf;
-                      return rx_data;
-                  }
-                  return py::bytes( "" );
-              } )
-        .def( "write_reg",
-              []( lot::Spi &self, int register_address, py::bytes data ) {
-                  std::string str = data;
-                  if( str.size() > 0 )
-                  {
-                      self.write_reg( static_cast<uint8_t>( register_address ),
-                                      reinterpret_cast<uint8_t *>(
-                                          const_cast<char *>( str.c_str() ) ),
-                                      str.size() );
-                  }
-              } )
-        .def( "write_reg",
-              []( lot::Spi &self,
-                  int       cs_pin,
-                  int       register_address,
-                  py::bytes data ) {
-                  std::string str = data;
-                  if( str.size() > 0 )
-                  {
-                      self.write_reg( cs_pin,
-                                      static_cast<uint8_t>( register_address ),
-                                      reinterpret_cast<uint8_t *>(
-                                          const_cast<char *>( str.c_str() ) ),
-                                      str.size() );
-                  }
-              } )
+                    delete buf;
+                    return rx_data;
+                }
+                return py::bytes( "" );
+            },
+            py::arg( "tx_data" ),
+            py::arg( "cs_pin" ),
+            "/**\n"
+            " * @brief Transmits and Receives data at the same time.\n"
+            " * @param tx_data Transmission data buffer.\n"
+            " * @param cs_pin Chip select pin (PHY).\n"
+            " * @return Reception data buffer.\n"
+            " */" )
+        .def(
+            "write_reg",
+            []( lot::Spi &self, int register_address, py::bytes data ) {
+                std::string str = data;
+                if( str.size() > 0 )
+                {
+                    self.write_reg( static_cast<uint8_t>( register_address ),
+                                    reinterpret_cast<uint8_t *>(
+                                        const_cast<char *>( str.c_str() ) ),
+                                    str.size() );
+                }
+            },
+            py::arg( "register_address" ),
+            py::arg( "data" ),
+            "/**\n"
+            " * @brief Writes data to a register of a slave device.\n"
+            " * @param register_address\n"
+            " * @param data Transmission data buffer.\n"
+            " */" )
+        .def(
+            "write_reg",
+            []( lot::Spi &self,
+                int       register_address,
+                py::bytes data,
+                int       cs_pin ) {
+                std::string str = data;
+                if( str.size() > 0 )
+                {
+                    self.write_reg( static_cast<uint8_t>( register_address ),
+                                    reinterpret_cast<uint8_t *>(
+                                        const_cast<char *>( str.c_str() ) ),
+                                    str.size(),
+                                    cs_pin );
+                }
+            },
+            py::arg( "register_address" ),
+            py::arg( "data" ),
+            py::arg( "cs_pin" ),
+
+            "/**\n"
+            " * @brief Writes data to a register of a slave device.\n"
+            " * @param register_address\n"
+            " * @param data Transmission data buffer.\n"
+            " * @param cs_pin Chip select pin (PHY).\n"
+            " */" )
         .def(
             "read_reg",
             []( lot::Spi &self, int register_address, int size ) {
@@ -461,17 +614,23 @@ PYBIND11_MODULE( _lot, m )
                 return py::bytes( "" );
             },
             py::arg( "register_address" ),
-            py::arg( "size" ) = 1 )
+            py::arg( "size" ),
+            "/**\n"
+            " * @brief Reads data from multiple registers of a slave device.\n"
+            " * @param register_address\n"
+            " * @param size The number of data.\n"
+            " * @return Reception data buffer.\n"
+            " */" )
         .def(
             "read_reg",
-            []( lot::Spi &self, int cs_pin, int register_address, int size ) {
+            []( lot::Spi &self, int register_address, int size, int cs_pin ) {
                 if( size > 0 )
                 {
                     uint8_t *buf = new uint8_t[size];
-                    self.read_reg( cs_pin,
-                                   static_cast<uint8_t>( register_address ),
+                    self.read_reg( static_cast<uint8_t>( register_address ),
                                    buf,
-                                   size );
+                                   size,
+                                   cs_pin );
                     py::bytes data( reinterpret_cast<const char *>( buf ),
                                     size );
                     delete buf;
@@ -479,7 +638,14 @@ PYBIND11_MODULE( _lot, m )
                 }
                 return py::bytes( "" );
             },
-            py::arg( "cs_pin" ),
             py::arg( "register_address" ),
-            py::arg( "size" ) = 1 );
+            py::arg( "size" ),
+            py::arg( "cs_pin" ),
+            "/**\n"
+            " * @brief Reads data from multiple registers of a slave device.\n"
+            " * @param register_address\n"
+            " * @param size The number of data.\n"
+            " * @param cs_pin Chip select pin (PHY).\n"
+            " * @return Reception data buffer.\n"
+            " */" );
 }
