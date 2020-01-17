@@ -118,38 +118,144 @@ PYBIND11_MODULE( _lot, m )
     /*
      * lot/lot-API/lot_time.h
      */
-    m.def( "init_time", &lot::init_time );
-    m.def( "delay_us", &lot::delay_us );
-    m.def( "delay_ms", &lot::delay_ms );
-    m.def( "micros", &lot::micros );
-    m.def( "millis", &lot::millis );
+    m.def( "init_time",
+           &lot::init_time,
+           "/**\n"
+           " * @brief Initializes registers or variables about time.\n"
+           " */" );
+    m.def( "delay_us",
+           &lot::delay_us,
+           py::arg( "us" ),
+           "/**\n"
+           " * @brief Pauses program for the amount of time in microseconds.\n"
+           " * @param us Minimum pause time in microseconds.\n"
+           " */" );
+    m.def( "delay_ms",
+           &lot::delay_ms,
+           py::arg( "ms" ),
+           "/**\n"
+           " * @brief Pauses program for the amount of time in milliseconds.\n"
+           " * @param us Minimum pause time in milliseconds.\n"
+           " */" );
+    m.def( "micros",
+           &lot::micros,
+           "/**\n"
+           " * @brief Returns the elapsed time in microseconds\n"
+           " *      since program called init_time().\n"
+           " * @return The number of microseconds.\n"
+           " */" );
+    m.def( "millis",
+           &lot::millis,
+           "/**\n"
+           " * @brief Returns the elapsed time in milliseconds\n"
+           " *      since program called init_time().\n"
+           " * @return The number of microseconds.\n"
+           " */" );
 
     /*
      * lot/Gpio.h
      */
     py::class_<lot::Gpio>( m, "Gpio" )
-        .def( py::init<int>() )
+        .def( py::init<int>(),
+              py::arg( "pin" ),
+              "/**\n"
+              " * @brief Creates an instance of Gpio class and initializes "
+              "GPIO.\n"
+              " * @param pin\n"
+              " */" )
         .def( "mode",
-              ( void ( lot::Gpio::* )( lot::pin_mode_t ) ) & lot::Gpio::mode )
+              ( void ( lot::Gpio::* )( lot::pin_mode_t ) ) & lot::Gpio::mode,
+              py::arg( "pin_mode" ),
+              "/**\n"
+              " * @brief Sets pin mode.\n"
+              " * @param pin_mode\n"
+              " *      This parameter can be a value of @ref pin_mode_t.\n"
+              " */" )
         .def( "mode",
-              ( lot::pin_mode_t( lot::Gpio::* )( void ) ) & lot::Gpio::mode )
+              ( lot::pin_mode_t( lot::Gpio::* )( void ) ) & lot::Gpio::mode,
+              "/**\n"
+              " * @brief Gets pin mode.\n"
+              " * @return Pin mode.\n"
+              " *      This return value can be a value of @ref pin_mode_t.\n"
+              " */" )
         .def( "pull_up_down",
               ( void ( lot::Gpio::* )( lot::pud_mode_t ) )
-                  & lot::Gpio::pull_up_down )
+                  & lot::Gpio::pull_up_down,
+              py::arg( "pud" ),
+              "/**\n"
+              " * @brief Sets pull up/down/off.\n"
+              " * @param pud\n"
+              " *      This parameter can be a value of @ref pud_mode_t.\n"
+              " */" )
         .def( "pull_up_down",
               ( lot::pud_mode_t( lot::Gpio::* )( void ) )
-                  & lot::Gpio::pull_up_down )
+                  & lot::Gpio::pull_up_down,
+              "/**\n"
+              " * @brief Gets pull up/down/off.\n"
+              " * @return Pull up/down/off mode. \n"
+              " *      This return value can be a value of @ref pud_mode_t.\n"
+              " */" )
         .def( "drive",
-              ( void ( lot::Gpio::* )( uint32_t ) ) & lot::Gpio::drive )
-        .def( "drive", ( uint32_t( lot::Gpio::* )( void ) ) & lot::Gpio::drive )
-        .def( "digital", ( void ( lot::Gpio::* )( int ) ) & lot::Gpio::digital )
-        .def( "digital", ( int ( lot::Gpio::* )( void ) ) & lot::Gpio::digital )
-        .def( "on", ( void ( lot::Gpio::* )( void ) ) & lot::Gpio::on )
-        .def( "off", ( void ( lot::Gpio::* )( void ) ) & lot::Gpio::off )
-        .def( "toggle", ( int ( lot::Gpio::* )( void ) ) & lot::Gpio::toggle )
-        .def( "analog", ( void ( lot::Gpio::* )( int ) ) & lot::Gpio::analog )
-        .def( "analog", ( int ( lot::Gpio::* )( void ) ) & lot::Gpio::analog );
-
+              ( void ( lot::Gpio::* )( uint32_t ) ) & lot::Gpio::drive,
+              py::arg( "pin_drive" ),
+              "/**\n"
+              " * @brief Sets pin drive strength.\n"
+              " * @param pin_drive\n"
+              " */" )
+        .def( "drive",
+              ( uint32_t( lot::Gpio::* )( void ) ) & lot::Gpio::drive,
+              "/**\n"
+              " * @brief Gets pin drive strength.\n"
+              " * @return Pin drive.\n"
+              " */" )
+        .def(
+            "digital",
+            ( void ( lot::Gpio::* )( int ) ) & lot::Gpio::digital,
+            py::arg( "status" ),
+            "/**\n"
+            " * @brief Sets digital output status.\n"
+            " * @param status\n"
+            " *      This parameter can be @ref LOW (0) or @ref HIGH (not 0).\n"
+            " */" )
+        .def( "digital",
+              ( int ( lot::Gpio::* )( void ) ) & lot::Gpio::digital,
+              "/**\n"
+              " * @brief Gets digital output status.\n"
+              " * @return Digital output status.\n"
+              " *      This return value can be @ref LOW (0) or @ref HIGH (not "
+              "0).\n"
+              " */" )
+        .def( "on",
+              ( void ( lot::Gpio::* )( void ) ) & lot::Gpio::on,
+              "/**\n"
+              " * @brief Sets digital output to @ref HIGH.\n"
+              " */" )
+        .def( "off",
+              ( void ( lot::Gpio::* )( void ) ) & lot::Gpio::off,
+              "/**\n"
+              " * @brief Sets digital output to @ref LOW.\n"
+              " */" )
+        .def( "toggle",
+              ( int ( lot::Gpio::* )( void ) ) & lot::Gpio::toggle,
+              "/**\n"
+              " * @brief Toggle digital output.\n"
+              " * @return Digital output status. \n"
+              " *      This return value can be @ref LOW (0) or @ref HIGH (not "
+              "0).\n"
+              " */" )
+        .def( "analog",
+              ( void ( lot::Gpio::* )( int ) ) & lot::Gpio::analog,
+              py::arg( "value" ),
+              "/**\n"
+              " * @brief Sets analog output value.\n"
+              " * @param value\n"
+              " */" )
+        .def( "analog",
+              ( int ( lot::Gpio::* )( void ) ) & lot::Gpio::analog,
+              "/**\n"
+              " * @brief Gets analog output value.\n"
+              " * @return Analog output value.\n"
+              " */" );
 
     /*
      * lot/Uart.h
