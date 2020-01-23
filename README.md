@@ -1,20 +1,26 @@
+![license](https://img.shields.io/github/license/loliot/python3-lot)
+![pypi](https://img.shields.io/pypi/v/lot)
+![language](https://img.shields.io/github/languages/top/loliot/python3-lot)
+
 # python3-lot
 
 ## Installation
 
+Ref: <a href="https://github.com/loliot/lot" target=_blank>https://github.com/loliot/lot</a>
+
 ```bash
-sudo add-apt-repository -y ppa:loliot/ppa &&\
-sudo apt install lot
+sudo add-apt-repository -y ppa:loliot/ppa \
+&& sudo apt install lot
 ```
 
 ```bash
-sudo lot install
+sudo lot install cpp
 ```
 
 ```bash
-sudo apt update &&\
-sudo apt install -y python3 python3-dev python3-pip &&\
-python3 -m pip install -U --user pip setuptools
+sudo apt update \
+&& sudo apt install -y python3 python3-dev python3-pip \
+&& python3 -m pip install -U --user pip setuptools
 ```
 
 ```bash
