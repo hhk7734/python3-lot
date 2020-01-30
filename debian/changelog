@@ -1,3 +1,9 @@
+python3-lot (0.8.1) unstable; urgency=medium
+
+  * Reflect lot-SBC v0.12.3
+
+ -- Hyeonki Hong <hhk7734@gmail.com>  Thu, 30 Jan 2020 20:53:32 +0900
+
 python3-lot (0.8.0) unstable; urgency=medium
 
   * Reflect lot-SBC v0.12.0
