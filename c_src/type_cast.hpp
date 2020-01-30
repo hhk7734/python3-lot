@@ -32,19 +32,19 @@ namespace pybind11
 namespace detail
 {
     template<>
-    struct type_caster<lot::pin_mode_t>
+    struct type_caster<lot::GpioMode>
     {
     public:
         /**
-         * This macro establishes the name 'lot::pin_mode_t' in
+         * This macro establishes the name 'lot::GpioMode' in
          * function signatures and declares a local variable
-         * 'value' of type lot::pin_mode_t
+         * 'value' of type lot::GpioMode
          */
-        PYBIND11_TYPE_CASTER( lot::pin_mode_t, _( "lot::pin_mode_t" ) );
+        PYBIND11_TYPE_CASTER( lot::GpioMode, _( "lot::GpioMode" ) );
 
         /**
          * Conversion part 1 (Python->C++): convert a PyObject into
-         * a lot::pin_mode_t instance or return false upon failure.
+         * a lot::GpioMode instance or return false upon failure.
          * The second argument indicates whether implicit conversions
          * should be applied.
          */
@@ -56,21 +56,21 @@ namespace detail
             PyObject *tmp = PyNumber_Long( source );
             if( !tmp )
                 return false;
-            /* Now try to convert into a C++ lot::pin_mode_t */
-            value = static_cast<lot::pin_mode_t>( PyLong_AsLong( tmp ) );
+            /* Now try to convert into a C++ lot::GpioMode */
+            value = static_cast<lot::GpioMode>( PyLong_AsLong( tmp ) );
             Py_DECREF( tmp );
             /* Ensure return code was OK (to avoid out-of-range errors etc) */
             return !( value == -1 && !PyErr_Occurred() );
         }
 
         /**
-         * Conversion part 2 (C++ -> Python): convert an lot::pin_mode_t
+         * Conversion part 2 (C++ -> Python): convert an lot::GpioMode
          * instance into a Python object. The second and third arguments
          * are used to indicate the return value policy and parent object
          * (for ``return_value_policy::reference_internal``) and are
          * generally ignored by implicit casters.
          */
-        static handle cast( lot::pin_mode_t src,
+        static handle cast( lot::GpioMode src,
                             return_value_policy /* policy */,
                             handle /* parent */ )
         {
@@ -79,22 +79,22 @@ namespace detail
     };
 
     template<>
-    struct type_caster<lot::pud_mode_t>
+    struct type_caster<lot::PUDMode>
     {
     public:
-        PYBIND11_TYPE_CASTER( lot::pud_mode_t, _( "lot::pud_mode_t" ) );
+        PYBIND11_TYPE_CASTER( lot::PUDMode, _( "lot::PUDMode" ) );
         bool load( handle src, bool )
         {
             PyObject *source = src.ptr();
             PyObject *tmp    = PyNumber_Long( source );
             if( !tmp )
                 return false;
-            value = static_cast<lot::pud_mode_t>( PyLong_AsLong( tmp ) );
+            value = static_cast<lot::PUDMode>( PyLong_AsLong( tmp ) );
             Py_DECREF( tmp );
             return !( value == -1 && !PyErr_Occurred() );
         }
 
-        static handle cast( lot::pud_mode_t src,
+        static handle cast( lot::PUDMode src,
                             return_value_policy /* policy */,
                             handle /* parent */ )
         {
@@ -103,22 +103,22 @@ namespace detail
     };
 
     template<>
-    struct type_caster<lot::bit_order_t>
+    struct type_caster<lot::BitOrder>
     {
     public:
-        PYBIND11_TYPE_CASTER( lot::bit_order_t, _( "lot::bit_order_t" ) );
+        PYBIND11_TYPE_CASTER( lot::BitOrder, _( "lot::BitOrder" ) );
         bool load( handle src, bool )
         {
             PyObject *source = src.ptr();
             PyObject *tmp    = PyNumber_Long( source );
             if( !tmp )
                 return false;
-            value = static_cast<lot::bit_order_t>( PyLong_AsLong( tmp ) );
+            value = static_cast<lot::BitOrder>( PyLong_AsLong( tmp ) );
             Py_DECREF( tmp );
             return !( value == -1 && !PyErr_Occurred() );
         }
 
-        static handle cast( lot::bit_order_t src,
+        static handle cast( lot::BitOrder src,
                             return_value_policy /* policy */,
                             handle /* parent */ )
         {
@@ -127,22 +127,22 @@ namespace detail
     };
 
     template<>
-    struct type_caster<lot::uart_mode_t>
+    struct type_caster<lot::UartMode>
     {
     public:
-        PYBIND11_TYPE_CASTER( lot::uart_mode_t, _( "lot::uart_mode_t" ) );
+        PYBIND11_TYPE_CASTER( lot::UartMode, _( "lot::UartMode" ) );
         bool load( handle src, bool )
         {
             PyObject *source = src.ptr();
             PyObject *tmp    = PyNumber_Long( source );
             if( !tmp )
                 return false;
-            value = static_cast<lot::uart_mode_t>( PyLong_AsLong( tmp ) );
+            value = static_cast<lot::UartMode>( PyLong_AsLong( tmp ) );
             Py_DECREF( tmp );
             return !( value == -1 && !PyErr_Occurred() );
         }
 
-        static handle cast( lot::uart_mode_t src,
+        static handle cast( lot::UartMode src,
                             return_value_policy /* policy */,
                             handle /* parent */ )
         {
@@ -151,22 +151,22 @@ namespace detail
     };
 
     template<>
-    struct type_caster<lot::spi_mode_t>
+    struct type_caster<lot::SpiMode>
     {
     public:
-        PYBIND11_TYPE_CASTER( lot::spi_mode_t, _( "lot::spi_mode_t" ) );
+        PYBIND11_TYPE_CASTER( lot::SpiMode, _( "lot::SpiMode" ) );
         bool load( handle src, bool )
         {
             PyObject *source = src.ptr();
             PyObject *tmp    = PyNumber_Long( source );
             if( !tmp )
                 return false;
-            value = static_cast<lot::spi_mode_t>( PyLong_AsLong( tmp ) );
+            value = static_cast<lot::SpiMode>( PyLong_AsLong( tmp ) );
             Py_DECREF( tmp );
             return !( value == -1 && !PyErr_Occurred() );
         }
 
-        static handle cast( lot::spi_mode_t src,
+        static handle cast( lot::SpiMode src,
                             return_value_policy /* policy */,
                             handle /* parent */ )
         {
@@ -175,22 +175,22 @@ namespace detail
     };
 
     template<>
-    struct type_caster<lot::log_level_t>
+    struct type_caster<lot::LogLevel>
     {
     public:
-        PYBIND11_TYPE_CASTER( lot::log_level_t, _( "lot::log_level_t" ) );
+        PYBIND11_TYPE_CASTER( lot::LogLevel, _( "lot::LogLevel" ) );
         bool load( handle src, bool )
         {
             PyObject *source = src.ptr();
             PyObject *tmp    = PyNumber_Long( source );
             if( !tmp )
                 return false;
-            value = static_cast<lot::log_level_t>( PyLong_AsLong( tmp ) );
+            value = static_cast<lot::LogLevel>( PyLong_AsLong( tmp ) );
             Py_DECREF( tmp );
             return !( value == -1 && !PyErr_Occurred() );
         }
 
-        static handle cast( lot::log_level_t src,
+        static handle cast( lot::LogLevel src,
                             return_value_policy /* policy */,
                             handle /* parent */ )
         {
