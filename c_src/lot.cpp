@@ -58,8 +58,8 @@ PYBIND11_MODULE( _lot, m )
     m.attr( "PULL_DOWN" ) = lot::PULL_DOWN;
     m.attr( "PULL_UP" )   = lot::PULL_UP;
 
-    m.attr( "LOW" )  = static_cast<int>( lot::LOW );
-    m.attr( "HIGH" ) = static_cast<int>( lot::HIGH );
+    m.attr( "LOW" )  = lot::LOW;
+    m.attr( "HIGH" ) = lot::HIGH;
 
     m.attr( "LSB_FIRST" ) = lot::LSB_FIRST;
     m.attr( "MSB_FIRST" ) = lot::MSB_FIRST;
@@ -164,36 +164,36 @@ PYBIND11_MODULE( _lot, m )
               " * @param pin\n"
               " */" )
         .def( "mode",
-              ( void ( lot::Gpio::* )( lot::pin_mode_t ) ) & lot::Gpio::mode,
+              ( void ( lot::Gpio::* )( lot::GpioMode ) ) & lot::Gpio::mode,
               py::arg( "pin_mode" ),
               "/**\n"
               " * @brief Sets pin mode.\n"
               " * @param pin_mode\n"
-              " *      This parameter can be a value of @ref pin_mode_t.\n"
+              " *      This parameter can be a value of @ref GpioMode.\n"
               " */" )
         .def( "mode",
-              ( lot::pin_mode_t( lot::Gpio::* )( void ) ) & lot::Gpio::mode,
+              ( lot::GpioMode( lot::Gpio::* )( void ) ) & lot::Gpio::mode,
               "/**\n"
               " * @brief Gets pin mode.\n"
               " * @return Pin mode.\n"
-              " *      This return value can be a value of @ref pin_mode_t.\n"
+              " *      This return value can be a value of @ref GpioMode.\n"
               " */" )
         .def( "pull_up_down",
-              ( void ( lot::Gpio::* )( lot::pud_mode_t ) )
+              ( void ( lot::Gpio::* )( lot::PUDMode ) )
                   & lot::Gpio::pull_up_down,
               py::arg( "pud" ),
               "/**\n"
               " * @brief Sets pull up/down/off.\n"
               " * @param pud\n"
-              " *      This parameter can be a value of @ref pud_mode_t.\n"
+              " *      This parameter can be a value of @ref PUDMode.\n"
               " */" )
         .def( "pull_up_down",
-              ( lot::pud_mode_t( lot::Gpio::* )( void ) )
+              ( lot::PUDMode( lot::Gpio::* )( void ) )
                   & lot::Gpio::pull_up_down,
               "/**\n"
               " * @brief Gets pull up/down/off.\n"
               " * @return Pull up/down/off mode. \n"
-              " *      This return value can be a value of @ref pud_mode_t.\n"
+              " *      This return value can be a value of @ref PUDMode.\n"
               " */" )
         .def( "drive",
               ( void ( lot::Gpio::* )( uint32_t ) ) & lot::Gpio::drive,
@@ -288,7 +288,7 @@ PYBIND11_MODULE( _lot, m )
               "/**\n"
               " * @brief Sets UART mode.\n"
               " * @param uart_mode \n\n"
-              " *      This parameter can be a value of @ref uart_mode_t.\n"
+              " *      This parameter can be a value of @ref UartMode.\n"
               " */" )
         .def( "available",
               &lot::Uart::available,
@@ -490,7 +490,7 @@ PYBIND11_MODULE( _lot, m )
               "/**\n"
               " * @brief Sets SPI mode.\n"
               " * @param spi_mode\n"
-              " *      This parameter can be a value of @ref spi_mode_t.\n"
+              " *      This parameter can be a value of @ref SpiMode.\n"
               " */" )
         .def( "bit_order",
               &lot::Spi::bit_order,
@@ -498,7 +498,7 @@ PYBIND11_MODULE( _lot, m )
               "/**\n"
               " * @brief Sets bit-order.\n"
               " * @param spi_bit_order\n"
-              " *      This parameter can be a value of @ref bit_order_t.\n"
+              " *      This parameter can be a value of @ref BitOrder.\n"
               " */" )
         .def(
             "transceive",
